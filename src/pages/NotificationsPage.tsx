@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getErrorMessage } from '../api/errorMessage'
-import { listNotifications } from '../api/notifications'
+import { createNotification, listNotifications } from '../api/notifications'
 import { useAuth } from '../auth/useAuth'
 import { NotificationForm } from '../components/NotificationForm'
 import { NotificationList } from '../components/NotificationList'
@@ -52,10 +52,26 @@ export function NotificationsPage() {
     return (
       <>
         <NotificationForm
-          onCreated={(created) => setNotifications((current) => [created, ...(current ?? [])])}
+          heading="Nueva notificación"
+          submitLabel="Crear notificación"
+          submittingLabel="Creando…"
+          onSubmit={async (input) => {
+            const created = await createNotification(input)
+            setNotifications((current) => [created, ...(current ?? [])])
+          }}
         />
         <h2>Historial</h2>
-        <NotificationList notifications={notifications} />
+        <NotificationList
+          notifications={notifications}
+          onUpdated={(updated) =>
+            setNotifications(
+              (current) => current?.map((n) => (n.id === updated.id ? updated : n)) ?? null,
+            )
+          }
+          onDeleted={(id) =>
+            setNotifications((current) => current?.filter((n) => n.id !== id) ?? null)
+          }
+        />
       </>
     )
   }

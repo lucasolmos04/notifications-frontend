@@ -1,19 +1,33 @@
 import { useState, type SubmitEvent } from 'react'
 import { getErrorMessage } from '../api/errorMessage'
-import { createNotification } from '../api/notifications'
-import type { Channel, Notification } from '../types'
+import type { Channel, NotificationInput } from '../types'
 import { CHANNEL_LABELS } from './labels'
 
 const SMS_MAX_LENGTH = 160
 
 interface Props {
-  onCreated: (notification: Notification) => void
+  heading: string
+  submitLabel: string
+  submittingLabel: string
+  // Valores de partida al editar; sin ellos el formulario arranca vacío.
+  initialValues?: NotificationInput
+  // Crea o actualiza. Si lanza un error, el formulario lo muestra.
+  onSubmit: (input: NotificationInput) => Promise<void>
+  // Si se pasa, se muestra el botón "Cancelar".
+  onCancel?: () => void
 }
 
-export function NotificationForm({ onCreated }: Props) {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [channel, setChannel] = useState<Channel>('email')
+export function NotificationForm({
+  heading,
+  submitLabel,
+  submittingLabel,
+  initialValues,
+  onSubmit,
+  onCancel,
+}: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '')
+  const [content, setContent] = useState(initialValues?.content ?? '')
+  const [channel, setChannel] = useState<Channel>(initialValues?.channel ?? 'email')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -34,13 +48,17 @@ export function NotificationForm({ onCreated }: Props) {
 
     setSubmitting(true)
     try {
-      const created = await createNotification({ title: title.trim(), content, channel })
-      onCreated(created)
+      await onSubmit({ title: title.trim(), content, channel })
       // Se conserva el canal elegido para crear varias seguidas.
       setTitle('')
       setContent('')
     } catch (err) {
-      setError(getErrorMessage(err, { 400: 'Revisa los datos de la notificación.' }))
+      setError(
+        getErrorMessage(err, {
+          400: 'Revisa los datos de la notificación.',
+          404: 'Esta notificación ya no existe. Recarga la página.',
+        }),
+      )
     } finally {
       setSubmitting(false)
     }
@@ -48,7 +66,7 @@ export function NotificationForm({ onCreated }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Nueva notificación</h2>
+      <h2>{heading}</h2>
       {/* disabled evita editar durante el envío y perder esos cambios al limpiar */}
       <fieldset disabled={submitting}>
         <label>
@@ -77,8 +95,13 @@ export function NotificationForm({ onCreated }: Props) {
         </label>
         {error && <p role="alert">{error}</p>}
         <button type="submit" disabled={smsTooLong}>
-          {submitting ? 'Creando…' : 'Crear notificación'}
+          {submitting ? submittingLabel : submitLabel}
         </button>
+        {onCancel && (
+          <button type="button" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
       </fieldset>
     </form>
   )

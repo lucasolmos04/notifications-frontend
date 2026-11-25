@@ -1,7 +1,13 @@
 import type { Notification } from '../types'
-import { CHANNEL_LABELS, STATUS_LABELS } from './labels'
+import { NotificationItem } from './NotificationItem'
 
-export function NotificationList({ notifications }: { notifications: Notification[] }) {
+interface Props {
+  notifications: Notification[]
+  onUpdated: (notification: Notification) => void
+  onDeleted: (id: string) => void
+}
+
+export function NotificationList({ notifications, onUpdated, onDeleted }: Props) {
   if (notifications.length === 0) {
     return <p>Todavía no tienes notificaciones.</p>
   }
@@ -9,14 +15,12 @@ export function NotificationList({ notifications }: { notifications: Notificatio
   return (
     <ul>
       {notifications.map((notification) => (
-        <li key={notification.id}>
-          <h3>{notification.title}</h3>
-          <p>{notification.content}</p>
-          <small>
-            Canal: {CHANNEL_LABELS[notification.channel]} · Estado:{' '}
-            {STATUS_LABELS[notification.status]}
-          </small>
-        </li>
+        <NotificationItem
+          key={notification.id}
+          notification={notification}
+          onUpdated={onUpdated}
+          onDeleted={onDeleted}
+        />
       ))}
     </ul>
   )
