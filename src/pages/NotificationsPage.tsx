@@ -52,6 +52,7 @@ export function NotificationsPage() {
     return (
       <>
         <NotificationForm
+          className="card"
           heading="Nueva notificación"
           submitLabel="Crear notificación"
           submittingLabel="Creando…"
@@ -78,10 +79,12 @@ export function NotificationsPage() {
 
   return (
     <main>
-      <h1>Mis notificaciones</h1>
-      <button type="button" onClick={logout}>
-        Cerrar sesión
-      </button>
+      <header>
+        <h1>Mis notificaciones</h1>
+        <button type="button" className="secondary" onClick={logout}>
+          Cerrar sesión
+        </button>
+      </header>
       {renderContent()}
     </main>
   )

@@ -13,7 +13,7 @@ export function NotificationList({ notifications, onUpdated, onDeleted }: Props)
   }
 
   return (
-    <ul>
+    <ul className="notifications">
       {notifications.map((notification) => (
         <NotificationItem
           key={notification.id}

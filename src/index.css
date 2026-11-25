@@ -1,6 +1,229 @@
+:root {
+  --bg: #f4f5f7;
+  --surface: #fff;
+  --text: #1f2430;
+  --muted: #5c6475;
+  --border: #d8dce4;
+  --primary: #2f5bd7;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: system-ui, sans-serif;
+  line-height: 1.5;
   margin: 0;
-  background: #f5f5f5;
-  color: #222;
+  background: var(--bg);
+  color: var(--text);
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+main.auth {
+  max-width: 400px;
+}
+
+main.auth h1,
+main.auth > a {
+  display: block;
+  text-align: center;
+}
+
+main > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+
+main > header h1 {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+form h2 {
+  margin-top: 0;
+}
+
+a {
+  color: var(--primary);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+/* El formulario de edición ya está dentro de una tarjeta. */
+li.card form h2 {
+  font-size: 1.05rem;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+input,
+textarea,
+select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  font: inherit;
+  font-weight: 400;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 8px 16px;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.secondary {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+button.danger {
+  color: var(--danger);
+  background: var(--surface);
+  border-color: var(--danger);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+:is(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid #8aa8ff;
+  outline-offset: 1px;
+}
+
+/* En login y registro el botón ocupa todo el ancho. */
+main.auth form button {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+[role='alert'] {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+[role='status'] {
+  color: var(--muted);
+  text-align: center;
+}
+
+.notifications {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Evita que textos largos sin espacios desborden la tarjeta. */
+.item-header h3,
+.item-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.item-content {
+  white-space: pre-wrap;
+}
+
+small {
+  color: var(--muted);
+}
+
+.badge {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.badge-sent {
+  color: #14633a;
+  background: #e3f5ea;
+}
+
+.badge-failed {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.badge-pending {
+  color: #7a5200;
+  background: #fff3d6;
 }

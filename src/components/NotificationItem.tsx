@@ -39,7 +39,7 @@ export function NotificationItem({ notification, onUpdated, onDeleted }: Props) 
 
   if (editing) {
     return (
-      <li>
+      <li className="card">
         <NotificationForm
           heading="Editar notificación"
           submitLabel="Guardar cambios"
@@ -56,15 +56,17 @@ export function NotificationItem({ notification, onUpdated, onDeleted }: Props) 
   }
 
   return (
-    <li>
-      <h3>{title}</h3>
-      <p>{content}</p>
-      <small>
-        Canal: {CHANNEL_LABELS[channel]} · Estado: {STATUS_LABELS[status]}
-      </small>
-      <div>
+    <li className="card">
+      <div className="item-header">
+        <h3>{title}</h3>
+        <span className={`badge badge-${status}`}>{STATUS_LABELS[status]}</span>
+      </div>
+      <p className="item-content">{content}</p>
+      <small>Canal: {CHANNEL_LABELS[channel]}</small>
+      <div className="actions">
         <button
           type="button"
+          className="secondary"
           disabled={deleting}
           onClick={() => {
             setError(null)
@@ -73,7 +75,7 @@ export function NotificationItem({ notification, onUpdated, onDeleted }: Props) 
         >
           Editar
         </button>
-        <button type="button" disabled={deleting} onClick={handleDelete}>
+        <button type="button" className="danger" disabled={deleting} onClick={handleDelete}>
           {deleting ? 'Eliminando…' : 'Eliminar'}
         </button>
       </div>

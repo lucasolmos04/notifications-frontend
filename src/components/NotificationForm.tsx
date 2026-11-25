@@ -6,6 +6,7 @@ import { CHANNEL_LABELS } from './labels'
 const SMS_MAX_LENGTH = 160
 
 interface Props {
+  className?: string
   heading: string
   submitLabel: string
   submittingLabel: string
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export function NotificationForm({
+  className,
   heading,
   submitLabel,
   submittingLabel,
@@ -65,7 +67,7 @@ export function NotificationForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={className} onSubmit={handleSubmit}>
       <h2>{heading}</h2>
       {/* disabled evita editar durante el envío y perder esos cambios al limpiar */}
       <fieldset disabled={submitting}>
@@ -94,14 +96,16 @@ export function NotificationForm({
           </select>
         </label>
         {error && <p role="alert">{error}</p>}
-        <button type="submit" disabled={smsTooLong}>
-          {submitting ? submittingLabel : submitLabel}
-        </button>
-        {onCancel && (
-          <button type="button" onClick={onCancel}>
-            Cancelar
+        <div className="actions">
+          <button type="submit" disabled={smsTooLong}>
+            {submitting ? submittingLabel : submitLabel}
           </button>
-        )}
+          {onCancel && (
+            <button type="button" className="secondary" onClick={onCancel}>
+              Cancelar
+            </button>
+          )}
+        </div>
       </fieldset>
     </form>
   )

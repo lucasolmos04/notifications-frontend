@@ -61,9 +61,9 @@ export function RegisterPage() {
   }
 
   return (
-    <main>
+    <main className="auth">
       <h1>Crear cuenta</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit}>
         <label>
           Nombre
           <input {...bind('name')} autoComplete="given-name" required />

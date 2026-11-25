@@ -26,10 +26,10 @@ export function LoginPage() {
   }
 
   return (
-    <main>
+    <main className="auth">
       <h1>Iniciar sesión</h1>
       {notice && <p role="status">{notice}</p>}
-      <form onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit}>
         <label>
           Email
           <input
